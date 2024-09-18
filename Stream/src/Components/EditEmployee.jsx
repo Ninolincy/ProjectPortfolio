@@ -13,46 +13,51 @@ const EditEmployee = () => {
     category_id: "",
     //image: "",
   });
-  
-  const [category, setCategory] = useState([])
-  const navigate = useNavigate()
 
-  useEffect(()=> {//renders several times when update variable
-    axios.get('http://localhost:3000/auth/category')
-    .then(result => {
-      if(result.data.status) {
-        setCategory(result.data.Result)
-      } else {
-        alert(result.data.Error)
-      }
-    })
-    .catch(err => console.log(err))
+  const [category, setCategory] = useState([]);
+  const navigate = useNavigate();
 
-    axios.get('http://localhost:3000/auth/employee/'+id)
-    .then(result => {
+  useEffect(() => {
+    //renders several times when update variable
+    axios
+      .get("http://localhost:3000/auth/category")
+      .then((result) => {
+        if (result.data.status) {
+          setCategory(result.data.Result);
+        } else {
+          alert(result.data.Error);
+        }
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:3000/auth/employee/" + id)
+      .then((result) => {
         setEmployee({
-            ...employee,
-            name: result.data.Result[0].name,
-            email: result.data.Result[0].email,
-            address: result.data.Result[0].address,
-            salary: result.data.Result[0].salary,
-            category_id: result.data.Result[0].category_id
-        })
-    })
-    .catch(err => console.log(err))
-  }, [])
+          ...employee,
+          name: result.data.Result[0].name,
+          email: result.data.Result[0].email,
+          address: result.data.Result[0].address,
+          salary: result.data.Result[0].salary,
+          category_id: result.data.Result[0].category_id,
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.options('http://localhost:3000/auth/edit_employee/'+id, employee)
-    .then(result => {
-        if(result.data.Status) {
-            navigate('/dashboard/employee')
-        }else {
-            alert(result.data.Error)
+    e.preventDefault();
+    axios
+      .options("http://localhost:3000/auth/edit_employee/" + id, employee)
+      .then((result) => {
+        if (result.data.Status) {
+          navigate("/dashboard/employee");
+        } else {
+          alert(result.data.Error);
         }
-    }).catch(err => console.log(err))
-  }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
